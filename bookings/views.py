@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import LSAProfile
-from .serializers import LSASearchSerializer
+from .serializers import LSASearchSerializer,BookingCreateSerializer
 
 
 class LSASearchView(APIView):
@@ -31,4 +31,22 @@ class LSASearchView(APIView):
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
+        )
+        
+class BookingCreateView(APIView):
+
+    def post(self, request):
+        serializer = BookingCreateSerializer(data=request.data)
+
+        if serializer.is_valid():
+            booking = serializer.save()
+
+            return Response(
+                BookingCreateSerializer(booking).data,
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
         )

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import LSASearchView
+from .views import LSASearchView,BookingCreateView
 
 
 urlpatterns = [
@@ -8,5 +8,10 @@ urlpatterns = [
         "v1/lsas/search/",
         LSASearchView.as_view(),
         name="lsa-search",
+    ),
+    path(
+        "v1/bookings/",
+        BookingCreateView.as_view(),
+        name="booking-create",
     ),
 ]
