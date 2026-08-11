@@ -1,6 +1,5 @@
 from django.urls import path
-
-from .views import LSASearchView,BookingCreateView
+from .views import LSASearchView,BookingCreateView,PaymentWebhookView
 
 
 urlpatterns = [
@@ -13,5 +12,10 @@ urlpatterns = [
         "v1/bookings/",
         BookingCreateView.as_view(),
         name="booking-create",
+    ),
+    path(
+        "v1/payments/webhook/",
+        PaymentWebhookView.as_view(),
+        name="payment-webhook",
     ),
 ]
