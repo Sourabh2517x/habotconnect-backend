@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 import pytest
 from django.contrib.auth import get_user_model
 from requests.exceptions import RequestException
-from bookings.models import BookingRequest, LSAProfile, Parent
+from bookings.models import BookingRequest, LSAProfile, Parent, PaymentStatus
 from bookings.services import create_payment
 
 
@@ -94,7 +94,9 @@ def test_create_payment_gateway_failure(mock_post):
         Decimal("500.00"),
     )
 
-    assert result["success"] is False
-    assert result["error"] == "Payment gateway request failed."
+    assert result.status == PaymentStatus.FAILED
+    assert result.gateway_response["error"] == (
+    "Payment gateway request failed."
+    )
 
     mock_post.assert_called_once()

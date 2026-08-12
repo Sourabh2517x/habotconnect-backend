@@ -1,7 +1,7 @@
 import logging
 import uuid
 import requests
-from .models import Payment
+from .models import Payment,PaymentStatus
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +58,11 @@ def create_payment(booking, amount):
             booking.id,
             exc,
         )
-
+        payment.status = PaymentStatus.FAILED
+        payment.gateway_response = {
+        "error": "Payment gateway request failed."
+        }
+        payment.save(update_fields=["status", "gateway_response"])
         return payment
 
     except ValueError:
